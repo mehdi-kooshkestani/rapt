@@ -14,14 +14,14 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t rapt-image:latest .
+          docker build -t my-image:latest .
 
       - name: Save Docker image as tar file
         run: |
-          docker save -o rapt-image.tar rapt-image:latest
+          docker save -o my-image.tar my-image:latest
 
-      - name: Upload Docker image as artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload Docker image as artifact (v4)
+        uses: actions/upload-artifact@v4
         with:
           name: docker-image
-          path: rapt-image.tar
+          path: my-image.tar
