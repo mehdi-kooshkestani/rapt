@@ -9,26 +9,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Free Up Disk Space (Cleanup)
+        run: |
+          docker system prune -af --volumes || true
+          sudo apt-get clean
+          sudo rm -rf /var/lib/apt/lists/*
+          df -h  # Show available disk space after cleanup
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build and Save Docker Image with Cached Layers
+      - name: Log into GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and Push Docker Image with Cached Layers
         uses: docker/build-push-action@v4
         with:
-          tags: my-image:latest
-          load: true
+          tags: ghcr.io/${{ github.actor }}/my-image:latest
+          push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Save Docker image as tar file
-        run: |
-          docker save -o my-image.tar my-image:latest
-
-      - name: Upload Docker image as artifact (v4)
-        uses: actions/upload-artifact@v4
-        with:
-          name: docker-image
-          path: my-image.tar
+      - name: Check Disk Space After Build
+        run: df -h
