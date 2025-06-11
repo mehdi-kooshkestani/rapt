@@ -1,0 +1,7 @@
+__pycache__/
+.RPTRvenv/
+chroma_final/
+final_text.docx
+RAPTOR.ipynb
+test.ipynb
+zephyr-7b-beta.Q4_K_M.gguf
