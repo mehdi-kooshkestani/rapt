@@ -1,0 +1,27 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t rapt-image:latest .
+
+      - name: Save Docker image as tar file
+        run: |
+          docker save -o rapt-image.tar rapt-image:latest
+
+      - name: Upload Docker image as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-image
+          path: rapt-image.tar
