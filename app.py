@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import JSONResponse
 import tempfile
 import os
-import numpy as np
+# import numpy as np
 from RAPTOR import load_file_semantic_chunking_and_embedding_saving, query_chunks
 
 app = FastAPI()

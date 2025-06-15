@@ -3,20 +3,19 @@ from dotenv import load_dotenv
 from langchain_core.output_parsers import StrOutputParser
 from langchain.prompts import ChatPromptTemplate
 import os
-from transformers import AutoModel
+# from transformers import AutoModel
 from sentence_transformers import SentenceTransformer
 from langchain_community.vectorstores import Chroma
 from langchain.schema import Document
 import shutil
-from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from langchain.schema import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from cleantext import clean
-import matplotlib.pyplot as plt
-import tiktoken
+# import matplotlib.pyplot as plt
+# import tiktoken
 from langchain_community.document_loaders import Docx2txtLoader
 from hazm import Normalizer
 import re

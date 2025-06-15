@@ -15,9 +15,11 @@ RUN pip install --upgrade pip && \
     pip install --no-cache-dir scikit-build-core
 
 # Install Python dependencies from requirements.txt
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir --use-pep517 --no-build-isolation -r /app/requirements.txt
+COPY requirements.txt .
+COPY hazm-0.10.0-py3-none-any.whl .
 
+RUN pip install --no-cache-dir --use-pep517 --no-build-isolation -r requirements.txt
+RUN pip install hazm-0.10.0-py3-none-any.whl
 # Prevent pip from requiring hashes
 ENV PIP_REQUIRE_HASHES=0
 
