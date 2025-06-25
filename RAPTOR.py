@@ -10,7 +10,7 @@ from langchain.schema import Document
 import shutil
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from langchain.schema import Document
+# from langchain.schema import Document
 from sklearn.metrics.pairwise import cosine_similarity
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from cleantext import clean
@@ -27,13 +27,13 @@ import locale #mports Python's locale module, which handles localization (e.g., 
 import pandas as pd
 from sklearn.mixture import GaussianMixture
 from typing import Optional
-import numpy as np
+# import numpy as np
 import umap
 from langchain_community.retrievers.bm25 import BM25Retriever
 from typing import Dict, List, Optional, Tuple
 
 RANDOM_SEED = 224  # Fixed seed for reproducibility
-
+OPENAI_API_KEY= None
 
 class JinaV3Embedding:
     def __init__(self):
@@ -121,8 +121,9 @@ def cleaning(text):
 
 
 def load_model(model_name="gpt-3.5-turbo-instruct", max_tokens=500):
-    load_dotenv()
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    # load_dotenv()
+    # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    
     llm = OpenAI(
         model=model_name,
         api_key=OPENAI_API_KEY,
