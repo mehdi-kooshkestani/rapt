@@ -455,13 +455,17 @@ def recursive_embed_cluster_summarize(
     return results
 
 
-def query_chunks(query: str, retriever_25, retriever_sum):
+def query_chunks(query: str, retriever_25, retriever_sum):  # retriever_sum returnes 7 chunks and retriever_25 returns 4 chunks
     results_25 = retriever_25.get_relevant_documents(query)
     results_25_list=[doc.page_content for doc in results_25]
     results_sum = retriever_sum.invoke(query)
     results_sum_list = [doc.page_content for doc in results_sum]
-    results_25_list.extend(results_sum_list)
-    return(results_25_list)
+    # results_25_list.extend(results_sum_list)
+    for i in range(3):
+        index = 2 + 3 * i
+        results_sum_list.insert(index, results_25_list[i])
+    results_sum_list[10] = results_25_list[3]   
+    return results_sum_list
 
 
 def load_file_semantic_chunking_and_embedding_saving(file_path):
