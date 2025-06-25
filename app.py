@@ -51,5 +51,5 @@ async def ask_query(query: str = Form(...)):
     if retriever_sum is None:
         return JSONResponse(status_code=400, content={"error": "No file uploaded yet. Please upload a file first."})    
 
-    results = RAPTOR.query_chunks(query, retriever_25, retriever_sum)  # Pass retriever to query function
+    results = RAPTOR.query_chunks(query, retriever_25, retriever_sum, model_name="gpt-3.5-turbo-instruct", context_window=4096)  # Pass retriever to query function
     return {"results": results}

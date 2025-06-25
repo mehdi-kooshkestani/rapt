@@ -15,7 +15,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from cleantext import clean
 # import matplotlib.pyplot as plt
-# import tiktoken
+import tiktoken
 from langchain_community.document_loaders import Docx2txtLoader
 from hazm import Normalizer
 import re
@@ -455,7 +455,7 @@ def recursive_embed_cluster_summarize(
     return results
 
 
-def query_chunks(query: str, retriever_25, retriever_sum):  # retriever_sum returnes 7 chunks and retriever_25 returns 4 chunks
+def query_chunks(query: str, retriever_25, retriever_sum, model_name="gpt-3.5-turbo-instruct", context_window=4096):  # retriever_sum returnes 7 chunks and retriever_25 returns 4 chunks
     results_25 = retriever_25.get_relevant_documents(query)
     results_25_list=[doc.page_content for doc in results_25]
     results_sum = retriever_sum.invoke(query)
@@ -464,8 +464,26 @@ def query_chunks(query: str, retriever_25, retriever_sum):  # retriever_sum retu
     for i in range(3):
         index = 2 + 3 * i
         results_sum_list.insert(index, results_25_list[i])
-    results_sum_list[10] = results_25_list[3]   
-    return results_sum_list
+    results_sum_list[10] = results_25_list[3] 
+
+    # Load the tokenizer for model
+    encoding = tiktoken.encoding_for_model(model_name)
+
+    # Persian text
+    # persian_text = "سلام! حال شما چطوره؟ من یک مدل زبان هستم."
+
+    # Count tokens
+    # tokens = encoding.encode(persian_text)
+    # print(f"Token count: {len(tokens)}")  
+    final_list = []
+    used_tokens = 0
+    for i in range(len(results_sum_list)):
+        used_tokens += len(encoding.encode(results_sum_list[i]))
+        if used_tokens < context_window:
+            final_list.append(results_sum_list[i])
+        else:
+            break
+    return final_list
 
 
 def load_file_semantic_chunking_and_embedding_saving(file_path):
