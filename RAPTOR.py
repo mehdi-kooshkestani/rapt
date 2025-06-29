@@ -35,28 +35,48 @@ from typing import Dict, List, Optional, Tuple
 RANDOM_SEED = 224  # Fixed seed for reproducibility
 OPENAI_API_KEY= None
 
-class JinaV3Embedding:
+# class JinaV3Embedding:
+#     def __init__(self):
+#         self.model = SentenceTransformer("jinaai/jina-embeddings-v3", trust_remote_code=True)
+
+#     def embed_documents(self, texts):
+#         return self.model.encode(
+#             texts,
+#             task="retrieval.passage",
+#             prompt_name="retrieval.passage",
+#             convert_to_numpy=True
+#         ).tolist()
+
+#     def embed_query(self, text):
+#         return self.model.encode(
+#             [text],
+#             task="retrieval.query",
+#             prompt_name="retrieval.query",
+#             convert_to_numpy=True
+#         )[0].tolist()
+ 
+class E5MultilingualEmbedding:
     def __init__(self):
-        self.model = SentenceTransformer("jinaai/jina-embeddings-v3", trust_remote_code=True)
+        self.model = SentenceTransformer("intfloat/multilingual-e5-base")
 
     def embed_documents(self, texts):
+        # E5 expects a task-specific prompt prefix
+        texts_with_prompt = [f"passage: {t}" for t in texts]
         return self.model.encode(
-            texts,
-            task="retrieval.passage",
-            prompt_name="retrieval.passage",
-            convert_to_numpy=True
+            texts_with_prompt,
+            convert_to_numpy=True,
+            normalize_embeddings=True
         ).tolist()
 
     def embed_query(self, text):
+        query_with_prompt = f"query: {text}"
         return self.model.encode(
-            [text],
-            task="retrieval.query",
-            prompt_name="retrieval.query",
-            convert_to_numpy=True
-        )[0].tolist()
- 
+            [query_with_prompt],
+            convert_to_numpy=True,
+            normalize_embeddings=True
+        )[0].tolist() 
 
-embd=JinaV3Embedding()
+embd=E5MultilingualEmbedding()
 
 
 def cleanhtml(raw_html):
