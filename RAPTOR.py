@@ -484,7 +484,7 @@ def query_chunks(query: str, retriever_25, retriever_sum, model_name="gpt-3.5-tu
     for i in range(3):
         index = 2 + 3 * i
         results_sum_list.insert(index, results_25_list[i])
-    results_sum_list[10] = results_25_list[3] 
+    results_sum_list.append(results_25_list[3])
 
     # Load the tokenizer for model
     encoding = tiktoken.encoding_for_model(model_name)
@@ -537,7 +537,7 @@ def load_file_semantic_chunking_and_embedding_saving(file_path):
         Document(page_content=para) for para in paragraphs
     ]
 
-    embedding = JinaV3Embedding()
+    embedding = E5MultilingualEmbedding()
 
     text_splitter = SemanticChunker(embedding, breakpoint_threshold_type="gradient", breakpoint_threshold_amount=50)
     chunks = text_splitter.split_documents(cleaned_docs)
