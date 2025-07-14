@@ -551,7 +551,8 @@ def load_file_semantic_chunking_and_embedding_saving(file_path):
     global_embeddings=[embedding.embed_query(ch.page_content) for ch in chunks]
     # print(np.array(global_embeddings).shape)  
     
-    if has_nvidia_gpu():
+    # if has_nvidia_gpu():
+    if 0:
         # print("✅ NVIDIA GPU detected. Installing llama-cpp-python with CUDA support...")
         cuda_availablity=" NVIDIA GPU detected. Installing llama-cpp-python with CUDA support..."
         # Set environment variables
